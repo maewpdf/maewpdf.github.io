@@ -160,6 +160,21 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
  h2{font-size:30px}section{padding-top:70px}.grid,.trust{grid-template-columns:1fr}
  .btns .btn{width:100%;justify-content:center}.file{flex-wrap:wrap}.file .btn{margin-left:0;width:100%;justify-content:center}
  ol.steps li{padding-left:56px}ol.steps li:before{left:14px}}
+/* The problem report box (#report): sent to MaewPDF's mailbox through its own Apps Script. */
+.report{margin-top:28px;background:var(--card);border:1px solid var(--border);border-radius:14px;padding:28px;max-width:720px}
+.report label{display:block;font-weight:600;margin:0 0 6px}
+.report label span{color:var(--muted);font-weight:400;font-size:14px}
+.report input[type=text],.report textarea{width:100%;font:inherit;color:var(--text);background:var(--paste);border:1px solid var(--border);border-radius:8px;padding:10px 12px;margin:0 0 18px}
+.report textarea{min-height:150px;resize:vertical}
+.report input:focus,.report textarea:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:transparent}
+.report .hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.report .row{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.report button{border:0;cursor:pointer;font-family:inherit}
+.report button[disabled]{opacity:.6;cursor:default}
+.report .status{font-size:15px;margin:0}
+.report .status.ok{color:var(--ok)}
+.report .status.err{color:#c2410c}
+.report .note{background:var(--note);border:1px solid var(--note-line);border-radius:8px;padding:10px 14px;font-size:14px;color:var(--text);margin:0 0 18px}
 </style>
 </head>
 <body>
@@ -173,7 +188,7 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
 </div>
 <header class="bar"><div class="wrap">
   <a class="brand" href="./"><span class="logo"><img src="favicon.png?v=2" width="256" height="256" alt=""></span>MaewPDF <small>เดิมชื่อ PdfCraft ภาษาไทย</small></a>
-  <nav><a href="#features">ความสามารถ</a><a href="#compare">ต่างจากทางการ</a><a href="#install">วิธีติดตั้ง</a><a href="#faq">คำถามที่พบบ่อย</a></nav>
+  <nav><a href="#features">ความสามารถ</a><a href="#compare">ต่างจากทางการ</a><a href="#install">วิธีติดตั้ง</a><a href="#faq">คำถามที่พบบ่อย</a><a href="#report">แจ้งปัญหา</a></nav>
   <a class="btn primary sm dl" href="https://github.com/maewpdf/maewpdf/releases/latest">ดาวน์โหลด</a>
 </div></header>
 
@@ -389,9 +404,26 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
       </details>
       <details>
         <summary>เจอปัญหา แจ้งได้ที่ไหน</summary>
-        <p>แจ้งได้ที่ <a href="https://github.com/maewpdf/maewpdf/issues">หน้า Issues ของ MaewPDF</a> โปรดอย่าแจ้งที่โปรเจกต์ต้นฉบับ เพราะผู้พัฒนาต้นฉบับไม่ได้ดูแลฉบับนี้</p>
+        <p>แจ้งได้ที่ <a href="#report">ช่องแจ้งปัญหาท้ายหน้านี้</a> (ใส่แค่ชื่อกับปัญหาที่เจอ) หรือ <a href="https://github.com/maewpdf/maewpdf/issues">หน้า Issues ของ MaewPDF</a> บน GitHub โปรดอย่าแจ้งที่โปรเจกต์ต้นฉบับ เพราะผู้พัฒนาต้นฉบับไม่ได้ดูแลฉบับนี้</p>
       </details>
   </div>
+</div></section>
+
+<section id="report"><div class="wrap">
+  <h2>แจ้งปัญหา</h2>
+  <p class="sub">เจอปัญหาหรืออยากเสนออะไร เขียนบอกได้ที่นี่ ข้อความจะส่งถึงผู้พัฒนา MaewPDF โดยตรง</p>
+  <form class="report" id="report-form" novalidate>
+    <p class="note">โปรดอย่าใส่ข้อมูลส่วนตัว รหัสผ่าน หรือเนื้อหาในเอกสารลับ ถ้าต้องส่งไฟล์ตัวอย่าง ส่งมาที่ <a href="mailto:maewpdf@gmail.com">maewpdf@gmail.com</a></p>
+    <label for="report-name">ชื่อ</label>
+    <input type="text" id="report-name" name="name" maxlength="100" autocomplete="name" required>
+    <label for="report-message">ปัญหาที่เจอ <span>(ทำอะไรอยู่ แล้วเกิดอะไรขึ้น ใช้ MaewPDF รุ่นไหน)</span></label>
+    <textarea id="report-message" name="message" maxlength="5000" required></textarea>
+    <div class="hp" aria-hidden="true"><label for="report-website">เว้นว่างไว้</label><input type="text" id="report-website" name="website" tabindex="-1" autocomplete="off"></div>
+    <div class="row">
+      <button type="submit" class="btn primary sm" id="report-send">ส่ง</button>
+      <p class="status" id="report-status" role="status" aria-live="polite"></p>
+    </div>
+  </form>
 </div></section>
 </main>
 
@@ -400,7 +432,7 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
 <div>
 <p><strong>MaewPDF (เดิมชื่อ PdfCraft ภาษาไทย) ต่อยอดจาก PdfCraft และไม่ใช่ฉบับทางการ</strong> พัฒนาโดย Non.sittith ไม่ได้อยู่ในความดูแลหรือได้รับการรับรองจากผู้พัฒนา PdfCraft</p>
     <p>ตัวโปรแกรม: สัญญาอนุญาต MIT หรือ Apache-2.0 · ฟอนต์ TH Sarabun PSK ลิขสิทธิ์ของสำนักงานส่งเสริมอุตสาหกรรมซอฟต์แวร์แห่งชาติ (SIPA) แจกจ่ายโดยไม่ดัดแปลง ภายใต้ GNU GPL รุ่น 2 หรือใหม่กว่า พร้อมข้อยกเว้นการฝังฟอนต์</p>
-    <p><a href="https://github.com/maewpdf/maewpdf">ซอร์สโค้ดบน GitHub</a> · <a href="https://github.com/maewpdf/maewpdf/releases/latest">ดาวน์โหลด</a> · <a href="https://github.com/maewpdf/maewpdf/issues">แจ้งปัญหา</a></p>
+    <p><a href="https://github.com/maewpdf/maewpdf">ซอร์สโค้ดบน GitHub</a> · <a href="https://github.com/maewpdf/maewpdf/releases/latest">ดาวน์โหลด</a> · <a href="#report">แจ้งปัญหา</a></p>
 </div>
 </div></footer>
 <script>
@@ -411,6 +443,28 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
     btn.querySelector('.sun').style.display=dark()?'':'none';btn.querySelector('.moon').style.display=dark()?'none':'';}
   btn.addEventListener('click',function(){var t=dark()?'light':'dark';root.dataset.theme=t;try{localStorage.setItem('theme',t);}catch(e){}show();});
   show();
+})();
+</script>
+<script>
+// The problem report box: posted to MaewPDF's Apps Script, which mails it to maewpdf@gmail.com.
+(function(){
+  var form=document.getElementById('report-form');if(!form)return;
+  var send=document.getElementById('report-send'),status=document.getElementById('report-status');
+  var nameEl=document.getElementById('report-name'),msgEl=document.getElementById('report-message'),hpEl=document.getElementById('report-website');
+  var URL_='https://script.google.com/macros/s/AKfycbxTTEe66LVCKRTmCmkvgujOfbo1cRmRbR8kyRYCdRlj4OnO36UXU-KMvU8ngIPzfpWntg/exec';
+  function say(text,kind){status.textContent=text;status.className='status'+(kind?' '+kind:'');}
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var name=nameEl.value.trim(),message=msgEl.value.trim();
+    if(!name){say('ใส่ชื่อก่อนนะ','err');nameEl.focus();return;}
+    if(!message){say('เขียนปัญหาที่เจอก่อนนะ','err');msgEl.focus();return;}
+    var body=new URLSearchParams({name:name,message:message,website:hpEl.value,agent:navigator.userAgent,page:location.href});
+    send.disabled=true;say('กำลังส่ง...');
+    fetch(URL_,{method:'POST',body:body}).then(function(r){return r.json();}).then(function(d){
+      if(d&&d.ok){form.reset();say('ส่งแล้ว ขอบคุณที่แจ้งนะ','ok');}else{say('ส่งไม่สำเร็จ ลองใหม่อีกครั้ง หรือส่งอีเมลมาที่ maewpdf@gmail.com','err');}
+    }).catch(function(){say('ส่งไม่สำเร็จ (อินเทอร์เน็ตอาจมีปัญหา) ลองใหม่อีกครั้ง หรือส่งอีเมลมาที่ maewpdf@gmail.com','err');})
+    .then(function(){send.disabled=false;});
+  });
 })();
 </script>
 </body>
