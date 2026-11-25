@@ -344,8 +344,7 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
       <button class="btn primary fed" type="button" id="fed">เลี้ยงแล้ว! 🐾</button>
       <a class="btn ghost save" id="save-qr" href="qr-10.svg" download="maewpdf-qr-10.svg">บันทึกรูป QR</a>
       <div class="ewallet">
-        <span>สแกนไม่ได้? โอนผ่านพร้อมเพย์ › e-Wallet</span>
-        <div class="row"><b id="ewallet-id">004999008864711</b><button type="button" class="copy" id="ewallet-copy">คัดลอก</button></div>
+        <span>เปิดหน้านี้บนมือถือ? กด "บันทึกรูป QR" แล้วเปิดแอปธนาคาร › สแกน › เลือกรูปจากอัลบั้ม</span>
       </div>
     </div>
 
@@ -619,12 +618,6 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
     amount.textContent=baht?baht+' บาท':'ใส่ยอดเองในแอปธนาคาร';
     var qr=document.getElementById('qr'),save=document.getElementById('save-qr');qr.src='qr-'+(baht||'any')+'.svg';save.href=qr.src;save.download='maewpdf-qr-'+(baht||'any')+'.svg';qr.alt='QR พร้อมเพย์ '+(baht?'ยอด '+baht+' บาท':'ใส่ยอดเอง');
   });});
-  var cp=document.getElementById('ewallet-copy');
-  cp.addEventListener('click',function(){
-    var id=document.getElementById('ewallet-id').textContent;
-    function done(){cp.textContent='คัดลอกแล้ว ✓';setTimeout(function(){cp.textContent='คัดลอก';},1800);}
-    if(navigator.clipboard){navigator.clipboard.writeText(id).then(done,function(){});}
-  });
   var timer;
   function show(){
     var shown=treat==='any'?'feast':treat,w=words[shown](who.dataset.name);
