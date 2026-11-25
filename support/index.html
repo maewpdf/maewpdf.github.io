@@ -271,6 +271,11 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
 .kindly{max-width:640px;margin:30px auto 0;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px 22px;text-align:left}
 .kindly b{font-size:17px}.kindly p{margin:6px 0 0;color:var(--muted);font-size:15.5px;line-height:1.7}
 .kindly .fine{margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);font-size:14px;color:var(--faint)}
+.ewallet{margin-top:16px;padding-top:14px;border-top:1px dashed var(--border);font-size:14px;color:var(--muted)}
+.ewallet .row{display:flex;align-items:center;justify-content:center;gap:10px;margin-top:6px}
+.ewallet b{font-size:17px;letter-spacing:.5px;color:var(--text);font-variant-numeric:tabular-nums}
+.ewallet .copy{font:inherit;font-size:13px;font-weight:600;padding:4px 12px;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--accent-text);cursor:pointer}
+.ewallet .copy:hover{background:var(--hover)}
 .thanks{text-align:center;margin-top:40px;color:var(--muted)}
 .thanks .cat{width:84px;height:96px;border-radius:14px;background:#FF9F1C;display:grid;place-items:center;margin:0 auto 14px}
 .thanks .cat img{height:84px;width:auto}
@@ -338,6 +343,10 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
       <p class="tiny">แมวรับได้ทุกธนาคาร<br>ชื่อบัญชีที่เห็นตอนโอนคือชื่อผู้พัฒนา MaewPDF</p>
       <button class="btn primary fed" type="button" id="fed">เลี้ยงแล้ว! 🐾</button>
       <a class="btn ghost save" id="save-qr" href="qr-10.svg" download="maewpdf-qr-10.svg">บันทึกรูป QR</a>
+      <div class="ewallet">
+        <span>สแกนไม่ได้? โอนผ่านพร้อมเพย์ › e-Wallet</span>
+        <div class="row"><b id="ewallet-id">004999008864711</b><button type="button" class="copy" id="ewallet-copy">คัดลอก</button></div>
+      </div>
     </div>
 
     <div class="why">
@@ -610,6 +619,12 @@ footer p{margin:0 0 8px}.foot{display:flex;gap:22px;align-items:flex-start}.foot
     amount.textContent=baht?baht+' บาท':'ใส่ยอดเองในแอปธนาคาร';
     var qr=document.getElementById('qr'),save=document.getElementById('save-qr');qr.src='qr-'+(baht||'any')+'.svg';save.href=qr.src;save.download='maewpdf-qr-'+(baht||'any')+'.svg';qr.alt='QR พร้อมเพย์ '+(baht?'ยอด '+baht+' บาท':'ใส่ยอดเอง');
   });});
+  var cp=document.getElementById('ewallet-copy');
+  cp.addEventListener('click',function(){
+    var id=document.getElementById('ewallet-id').textContent;
+    function done(){cp.textContent='คัดลอกแล้ว ✓';setTimeout(function(){cp.textContent='คัดลอก';},1800);}
+    if(navigator.clipboard){navigator.clipboard.writeText(id).then(done,function(){});}
+  });
   var timer;
   function show(){
     var shown=treat==='any'?'feast':treat,w=words[shown](who.dataset.name);
